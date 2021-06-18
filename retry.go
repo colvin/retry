@@ -63,9 +63,9 @@ func Forever() Limiter {
 // Counts returns a Limiter that terminates the loop after the given number
 // of attempts have been made. Zero is treated the same as one.
 func Counts(max int) Limiter {
+	// First attempt counts
+	c := 1
 	return func(_ error) bool {
-		// First attempt counts
-		c := 1
 		for c < max {
 			c++
 			return true
