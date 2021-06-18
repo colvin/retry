@@ -36,9 +36,10 @@ func Retry(worker Worker, limiter Limiter, timer Timer) error {
 // evaluated.
 func CancelableLimiter(ctx context.Context, limiter Limiter) Limiter {
 	return func(err error) bool {
-		_, ok := <-ctx.Done()
-		if !ok {
+		select {
+		case <-ctx.Done():
 			return false
+		default:
 		}
 		return limiter(err)
 	}
